@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#030712">
+  <title>Retro Tank Fodder 1990</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Sentry DSN Configuration (retro-tank-mobile) -->
+  <script>
+    window.__SENTRY_DSN__ = window.__SENTRY_DSN__ || 'https://c023a1516b5efc5ab225457a718e0505@o487072.ingest.us.sentry.io/4512233921642496';
+  </script>
+</head>
+<body>
+  <div id="app-container">
+    <!-- Top Utility / Control Header -->
+    <header id="top-bar">
+      <div class="logo-text">⚡ RETRO TANK FODDER</div>
+      <div class="top-controls">
+        <button id="btn-home" class="icon-btn" title="Return to Main Menu">🏠</button>
+        <button id="btn-crt" class="icon-btn" title="Toggle CRT Filter">📺 CRT</button>
+        <button id="btn-sound" class="icon-btn" title="Toggle Sound">🔊</button>
+        <button id="btn-pause" class="icon-btn" title="Pause Game">⏸️</button>
+      </div>
+    </header>
+
+    <!-- Canvas Game Field -->
+    <main id="stage-wrapper">
+      <canvas id="game-canvas"></canvas>
+      <div id="crt-overlay"></div>
+    </main>
+
+    <!-- Exit to Main Menu Confirmation Modal -->
+    <div id="home-confirm-modal" class="modal-overlay hidden" role="dialog" aria-modal="true">
+      <div class="modal-card">
+        <div class="modal-icon">⚠️</div>
+        <div class="modal-title">EXIT TO MAIN MENU?</div>
+        <p class="modal-desc">Are you sure you want to return to the Main Menu? Current mission progress will be lost.</p>
+        <div class="modal-actions">
+          <button id="btn-modal-cancel" class="modal-btn btn-resume">RESUME</button>
+          <button id="btn-modal-confirm" class="modal-btn btn-exit">EXIT TO MENU</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Virtual Gamepad Controls -->
+    <footer id="controls-container">
+      <!-- Left: 4-Way D-Pad / Thumbstick -->
+      <div id="virtual-dpad">
+        <div id="dpad-up" class="dpad-arrow up">▲</div>
+        <div id="dpad-right" class="dpad-arrow right">▶</div>
+        <div id="dpad-down" class="dpad-arrow down">▼</div>
+        <div id="dpad-left" class="dpad-arrow left">◀</div>
+        <div id="dpad-knob"></div>
+      </div>
+
+      <!-- Right: Arcade Fire Action Button -->
+      <div id="actions-container">
+        <button id="btn-fire" aria-label="Fire Button">FIRE</button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Standalone Game Engine Script -->
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
