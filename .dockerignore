@@ -4,3 +4,7 @@ dist
 ios
 android
 archive
+.env
+.env.*
+*.log
+.DS_Store

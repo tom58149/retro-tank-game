@@ -55,3 +55,4 @@ jobs:
           service: ${{ env.SERVICE_NAME }}
           region: ${{ env.SERVICE_REGION }}
           image: ${{ env.IMAGE_NAME }}:${{ github.sha }}
+          flags: '--cpu-throttling'

@@ -19,16 +19,32 @@ const MIME_TYPES = {
 };
 
 const server = http.createServer((req, res) => {
+  // Only allow GET and HEAD methods
+  if (req.method !== 'GET' && req.method !== 'HEAD') {
+    res.writeHead(405, { 'Content-Type': 'text/plain' });
+    res.end('405 Method Not Allowed');
+    return;
+  }
+
   let reqPath = req.url === '/' ? '/index.html' : req.url;
   // Strip query strings
   reqPath = reqPath.split('?')[0];
 
-  const filePath = path.join(__dirname, reqPath);
+  const safePath = path.normalize(reqPath).replace(/^(\.\.[\/\\])+/, '');
+  const filePath = path.resolve(__dirname, '.' + safePath);
+
+  // Prevent directory traversal and block hidden/sensitive files (.env, .git)
+  if (!filePath.startsWith(__dirname) || path.basename(filePath).startsWith('.')) {
+    res.writeHead(403, { 'Content-Type': 'text/plain' });
+    res.end('403 Forbidden');
+    return;
+  }
+
   const ext = path.extname(filePath);
 
   fs.readFile(filePath, (err, content) => {
     if (err) {
-      if (err.code === 'ENOENT') {
+      if (err.code === 'ENOENT' || err.code === 'EISDIR') {
         res.writeHead(404, { 'Content-Type': 'text/plain' });
         res.end('404 Not Found');
       } else {
@@ -37,7 +53,12 @@ const server = http.createServer((req, res) => {
       }
     } else {
       const contentType = MIME_TYPES[ext] || 'application/octet-stream';
-      res.writeHead(200, { 'Content-Type': contentType });
+      res.writeHead(200, {
+        'Content-Type': contentType,
+        'X-Content-Type-Options': 'nosniff',
+        'X-Frame-Options': 'SAMEORIGIN',
+        'Referrer-Policy': 'strict-origin-when-cross-origin'
+      });
       res.end(content);
     }
   });
